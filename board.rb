@@ -12,11 +12,9 @@ class Board
     #card_array = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8]
     card_array = [1,1,2,2]
     card_array.shuffle!
-    i = 0
     @grid.each_index do |row|
       @grid.each_index do |col|
-        @grid[row][col] = Card.new(card_array[i])
-        i+=1
+        @grid[row][col] = Card.new(card_array.shift, false)
       end
     end
   end
@@ -37,12 +35,7 @@ class Board
 
   # Flatten and use enumerable method
   def won?
-    @grid.each_index do |row|
-      @grid.each_index do |col|
-        return false if @grid[row][col].face_down
-      end
-    end
-    true
+    @grid.flatten.all? { |el| el.face_down == false }
   end
 
   def convert(guessed_pos)
